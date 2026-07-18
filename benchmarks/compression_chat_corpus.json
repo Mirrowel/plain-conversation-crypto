@@ -1,0 +1,151 @@
+{
+  "format": "pcc/compression-corpus-v1",
+  "groups": {
+    "1-sentence": {
+      "best_ratio_mean": 0.8385,
+      "best_ratio_median": 0.8468,
+      "best_ratio_p90": 0.9167,
+      "compressed_bytes_median": 40.0,
+      "median_ratio_by_codec": {
+        "brotli-11": 1.0213,
+        "brotli-5": 1.0714,
+        "bz2": 1.7021,
+        "deflate": 1.0385,
+        "deflate-dict": 0.8542,
+        "lzma": 2.2245,
+        "raw": 1.0208,
+        "tokens": 1.0588,
+        "tokens-deflate": 1.0762,
+        "tokens-zstd": 1.24,
+        "zlib": 1.1633,
+        "zlib-dict": 1.0603,
+        "zstd-19": 1.2083,
+        "zstd-3": 1.2083,
+        "zstd-dict": 1.2083
+      },
+      "messages": 626,
+      "plaintext_bytes_mean": 47.307,
+      "plaintext_bytes_median": 48.0,
+      "winner_counts": {
+        "brotli-11": 39,
+        "brotli-5": 4,
+        "deflate-dict": 581,
+        "tokens": 2
+      },
+      "winner_counts_by_length": {
+        "65-128": {
+          "deflate-dict": 2
+        },
+        "<=64": {
+          "brotli-11": 39,
+          "brotli-5": 4,
+          "deflate-dict": 579,
+          "tokens": 2
+        }
+      },
+      "winner_percent": {
+        "brotli-11": 6.23,
+        "brotli-5": 0.64,
+        "deflate-dict": 92.81,
+        "tokens": 0.32
+      }
+    },
+    "2-sentence": {
+      "best_ratio_mean": 0.7616,
+      "best_ratio_median": 0.7653,
+      "best_ratio_p90": 0.8286,
+      "compressed_bytes_median": 73,
+      "median_ratio_by_codec": {
+        "brotli-11": 0.7849,
+        "brotli-5": 0.875,
+        "bz2": 1.1818,
+        "deflate": 0.8545,
+        "deflate-dict": 0.8095,
+        "lzma": 1.5773,
+        "raw": 1.0103,
+        "tokens": 1.0265,
+        "tokens-deflate": 0.9222,
+        "tokens-zstd": 0.9886,
+        "zlib": 0.9175,
+        "zlib-dict": 0.913,
+        "zstd-19": 0.8913,
+        "zstd-3": 0.9346,
+        "zstd-dict": 0.92
+      },
+      "messages": 313,
+      "plaintext_bytes_mean": 95.613,
+      "plaintext_bytes_median": 97,
+      "winner_counts": {
+        "brotli-11": 181,
+        "brotli-5": 5,
+        "deflate": 5,
+        "deflate-dict": 122
+      },
+      "winner_counts_by_length": {
+        "65-128": {
+          "brotli-11": 181,
+          "brotli-5": 5,
+          "deflate": 5,
+          "deflate-dict": 121
+        },
+        "<=64": {
+          "deflate-dict": 1
+        }
+      },
+      "winner_percent": {
+        "brotli-11": 57.83,
+        "brotli-5": 1.6,
+        "deflate": 1.6,
+        "deflate-dict": 38.98
+      }
+    },
+    "3-sentence": {
+      "best_ratio_mean": 0.6795,
+      "best_ratio_median": 0.68,
+      "best_ratio_p90": 0.7432,
+      "compressed_bytes_median": 98.0,
+      "median_ratio_by_codec": {
+        "brotli-11": 0.68,
+        "brotli-5": 0.774,
+        "bz2": 0.9873,
+        "deflate": 0.7702,
+        "deflate-dict": 0.7386,
+        "lzma": 1.331,
+        "raw": 1.0068,
+        "tokens": 1.0088,
+        "tokens-deflate": 0.8274,
+        "tokens-zstd": 0.878,
+        "zlib": 0.8112,
+        "zlib-dict": 0.8076,
+        "zstd-19": 0.8041,
+        "zstd-3": 0.8233,
+        "zstd-dict": 0.8084
+      },
+      "messages": 208,
+      "plaintext_bytes_mean": 143.904,
+      "plaintext_bytes_median": 146.0,
+      "winner_counts": {
+        "brotli-11": 177,
+        "brotli-5": 1,
+        "deflate-dict": 30
+      },
+      "winner_counts_by_length": {
+        "129-256": {
+          "brotli-11": 155,
+          "brotli-5": 1,
+          "deflate-dict": 15
+        },
+        "65-128": {
+          "brotli-11": 22,
+          "deflate-dict": 15
+        }
+      },
+      "winner_percent": {
+        "brotli-11": 85.1,
+        "brotli-5": 0.48,
+        "deflate-dict": 14.42
+      }
+    }
+  },
+  "source_lines": 626
+}

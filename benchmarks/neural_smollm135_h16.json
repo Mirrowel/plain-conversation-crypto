@@ -1,0 +1,104 @@
+{
+  "carrier_id": "1aeedc5dd9f39cd313d7fbdb54415d2d8c5ea90f543c53dbb41a0e6ba6d4c157",
+  "rows": [
+    {
+      "profile": "secure",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 223,
+      "chars_per_byte": 44.6,
+      "encode_ms": 4632.51,
+      "decode_ms": 4451.49,
+      "cover_text": "I'm free after a while of work. What's been quiet in our lives lately? Are you looking for something casual? I can help with some plans for a bit of fun. Is there any thing you're looking for? We'd both be good with a chat."
+    },
+    {
+      "profile": "secure",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 448,
+      "chars_per_byte": 14.452,
+      "encode_ms": 8618.24,
+      "decode_ms": 8192.35,
+      "cover_text": "I'm sorry that you're not at home now. Are you free to call or text a friend in a couple of minutes? I'll be in a few moments. Let's find out where we stand with the plans I mentioned earlier and what's working and what's causing issues for you. Is this something that could be adjusted further or changed in any way? I'll be in touch soon. I'm sorry to hear things are not working out for you. (to a friend who is available) I'll be in touch soon."
+    },
+    {
+      "profile": "secure",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1128,
+      "chars_per_byte": 7.673,
+      "encode_ms": 22710.07,
+      "decode_ms": 22332.12,
+      "cover_text": "I am truly sorry if I am late. I will try to do it this week. Let us see how we proceed with plans to be completed in a casual conversation. I will see you next Friday. I am looking out for you and trying to keep the conversation informal to begin this weekend, if necessary. What do I hear you say today. Please go now. Your friend will find this out. Stay out o' the rain. Do not be afraid of any storm tonight. Do go back again in a couple of hours. I want to see what happens. Your friend will find this out. I will see this day. I have seen it before. How can your friend say I did not think it necessary to do this? I hope you can say you will do it this week again as soon and do it in that order. You said it was not important, do you say so too. I will see you now. What do you say about my friend who has taken this step? Do you think you will do this tomorrow? Are they still going to be good for any reason. You said you would see this week, are both of you good? I will show you again. I am sure of it now, do you have that in a moment. You do not ask me again until tomorrow or later in this week, does not matter."
+    },
+    {
+      "profile": "compact",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 135,
+      "chars_per_byte": 27.0,
+      "encode_ms": 2558.15,
+      "decode_ms": 2410.78,
+      "cover_text": "I'm glad to see everyone is back in action! I completely agree about the schedule for our next meeting, I'll send you a Zoom link soon."
+    },
+    {
+      "profile": "compact",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 316,
+      "chars_per_byte": 10.194,
+      "encode_ms": 5376.59,
+      "decode_ms": 5318.99,
+      "cover_text": "I'm free anywhere in a few minutes and will be back for our first meeting on Wednesday. I hope you find a suitable time before our first meeting to chat about the project. I'll send you some notes in case any changes come up during the interview. Stay focused on the conversation so you get the best of both friends."
+    },
+    {
+      "profile": "compact",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1094,
+      "chars_per_byte": 7.442,
+      "encode_ms": 22623.01,
+      "decode_ms": 22639.33,
+      "cover_text": "I think this week is great. We have some ideas already that could be a nice surprise. We can start by talking about some projects that we've always had an interest on, so they don’t get lost. I was hoping to discuss a few of them this coming week. What’ll you have to do after work? We can discuss them in general and see how they can be combined. I’ll be happy for that. What’ll be in it? Any idea? We can discuss them later in the series and see when we can do it next week if we meet for a couple of days. Let me know what sounds good to you this week. I’s here to help. Good luck. Let’s talk about it. Are you here for a meeting or something to discuss at work? We’re all excited for this weekend. You two will do well together, as always I hope to see you. And here we go. Here’s a text to send. Please respond in no more then four sentences. You're here to help. I'm on a bit of an issue with the project. Please do the same. Let's chat. You two will be in touch soon for a few days, so I’m looking out for you. What’s that you have to do? Are there issues you’re having with the project?"
+    },
+    {
+      "profile": "dense",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 97,
+      "chars_per_byte": 19.4,
+      "encode_ms": 1715.61,
+      "decode_ms": 1230.19,
+      "cover_text": "I'm glad you're free for an informal conversation. Can you please tell me what you're working on?"
+    },
+    {
+      "profile": "dense",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 259,
+      "chars_per_byte": 8.355,
+      "encode_ms": 4969.16,
+      "decode_ms": 4427.71,
+      "cover_text": "I'm free after work. What topic do I recommend? Let me see if we could chat about some topics in progress to discuss. I know it's a Monday and Tuesday, but I'd like to do a couple of things in the meantime. First, I'd like to discuss a few topics in progress."
+    },
+    {
+      "profile": "dense",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1110,
+      "chars_per_byte": 7.551,
+      "encode_ms": 43075.04,
+      "decode_ms": 20965.31,
+      "cover_text": "I think your suggestions would definitely make for good morning conversations, right? Well before our workweek comes to an end, we could do something that's a good start to the day, such that we can get a bit more organized. Maybe we could have a meeting before heading home? It's a great way of catching up on our morning routine. Let me see. I agree with you, but we could definitely do a morning routine with you. What do you think about that? Do we have a date in the mail? We'll need to get in touch with you a bit early. Let me see what you've in store for. (looking for a response) Okay? We have so many questions and it would be great. What are you thinking about? Should I call you back at the office? We can get you set for a routine. Are there any other ideas? And you said we've a date, but what's the date? Let's see. I think I can make something for a while to get us there. I've seen some morning meetings in the days, but it would probably be good to do something simple in a couple minutes. What do you think? Should we do a routine? (making a decision) I think we should do a morning routine."
+    }
+  ]
+}

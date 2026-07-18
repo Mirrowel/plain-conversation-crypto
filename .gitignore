@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+transcript*.json
+/semantic_*.json
+*.json.tmp
+/*_cover.txt
+models/**/onnx/
+models/**/tokenizer.json
+models/**/tokenizer_config.json
+models/**/special_tokens_map.json
+models/**/config.json
+models/**/generation_config.json
+models/**/.cache/

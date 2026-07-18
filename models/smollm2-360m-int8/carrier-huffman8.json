@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "kind": "neural-onnx",
+  "name": "SmolLM2 360M conversational carrier Huffman-8",
+  "algorithm": "pcc-neural-huffman-v1",
+  "salt": "U21vbExNMkNhcnJpZXJWMiE=",
+  "model_file": "onnx/model_int8.onnx",
+  "tokenizer_file": "tokenizer.json",
+  "model_sha256": "5ee6c8dc6791050d8779687a16c8167643a234e00ea41e06a92e05f88003dbb3",
+  "tokenizer_sha256": "7d27c493c729a66ecefc837280b05d948b1ed50d130eebdbf911b1b36cf38ed7",
+  "coding": "huffman",
+  "candidate_count": 8,
+  "quality_attempts": 4,
+  "intra_op_threads": 2,
+  "prompt": "<|im_start|>system\nReply as one friend to another in a natural casual text conversation. Discuss ordinary plans for later this week. Use one to three normal sentences. Never mention prompts, instructions, assistants, conversations, emails, or writing about text.<|im_end|>\n<|im_start|>user\nAre you free later this week? I was thinking we could do something simple after work.<|im_end|>\n<|im_start|>assistant\n"
+}

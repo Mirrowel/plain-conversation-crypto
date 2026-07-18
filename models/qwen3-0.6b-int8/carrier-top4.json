@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "kind": "neural-onnx",
+  "name": "Qwen3 0.6B conversational carrier top-4",
+  "algorithm": "pcc-neural-fixed-v1",
+  "salt": "U21vbExNMkNhcnJpZXJWMiE=",
+  "model_file": "onnx/model_int8.onnx",
+  "tokenizer_file": "tokenizer.json",
+  "model_sha256": "d93222c672992a398eeea3a4a1ca025738efd9a18ba5f1691419ff8ae23a8e75",
+  "tokenizer_sha256": "e7a95fce95bf5b0946d0ddb3f9d7caa030b7e850bbe92b0edb26bcf563e9f3d5",
+  "coding": "fixed",
+  "top_k": 4,
+  "intra_op_threads": 2,
+  "prompt": "<|im_start|>system\nWrite only one natural, coherent, casual text message between friends. Use one to three ordinary sentences. Do not use headings, lists, labels, or mention these instructions. Do not include analysis or a thinking trace.<|im_end|>\n<|im_start|>user\nContinue an everyday conversation about plans later this week. The reply should make sense by itself.<|im_end|>\n<|im_start|>assistant\n"
+}

@@ -1,0 +1,104 @@
+{
+  "carrier_id": "122cf4778033fcbc9a743726e6fde8ad63f52bd54b458b8077aa8a42eece663f",
+  "rows": [
+    {
+      "profile": "secure",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 257,
+      "chars_per_byte": 51.4,
+      "encode_ms": 7014.62,
+      "decode_ms": 6266.61,
+      "cover_text": "I'm free to chat or hang out. How about we plan something casual, like grabbing bras? We could go for strolls or a coffee. You pick. How about we do it at a nice place with a small space and some great drinks, or we could just grab a coffee at a local spot."
+    },
+    {
+      "profile": "secure",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 372,
+      "chars_per_byte": 12.0,
+      "encode_ms": 10403.85,
+      "decode_ms": 9690.98,
+      "cover_text": "I'm free on Sunday, you're free on T. I suggest we grab a coffee this Sunday and do nothing. No plans tonight, but I can make one up later. Want to do a light workout at the cappuccinos? We can have dinner at the coffee house this Sunday? I can't wait for you to make an impression. You can't miss me or the coffee! We can do dinner, then a casual walk to the cappuccinos."
+    },
+    {
+      "profile": "secure",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1285,
+      "chars_per_byte": 8.741,
+      "encode_ms": 67641.1,
+      "decode_ms": 31372.73,
+      "cover_text": "I was actually thinking we can meet up at the coffee shop down the street and have a short chat. It's supposed to get pretty busy later so I thought we should get there early. How are your family's plans this week supposed to go? Do they need any special help to get their kids in and out in time? And have you found any new favorite restaurants? What did you see when I said text messages? I hope you don't have an urgent thing coming through, we don't really need a text. We can get that later on if you wish. Are you free for coffee this week or have you got another idea. Is this going through or is it a text you are responding with? I'm going to try to keep it casual and informal, I have nothing to worry you with and I am sure you'll be fine in the future with our plan on how to get on the other hand to be in a better place. So we can go ahead and meet up and see what it's all going for. Are you ready to meet up and have a casual conversation for later this week. Are you and the kids going together? Do you need any help getting them to the school in just one hour? I'm going to keep it casual and informal. I'm actually a little concerned that we can get a text that's not a question. Do you agree? By the time I got to your email we can get a text that's not a question."
+    },
+    {
+      "profile": "compact",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 210,
+      "chars_per_byte": 42.0,
+      "encode_ms": 5631.25,
+      "decode_ms": 5070.56,
+      "cover_text": "I'm free later, I have a few ideas. How about we do a simple walk around our block? We could stop at the park and have some coffee or a snack. What do you say? Is it something to do with work or something else?"
+    },
+    {
+      "profile": "compact",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 331,
+      "chars_per_byte": 10.677,
+      "encode_ms": 8194.04,
+      "decode_ms": 7875.23,
+      "cover_text": "I'm free this Friday, but we could do something simple after our meeting, okay? What do you have in mind for lunch or dinner? And maybe we could talk later? I'm free, right after my meeting? (sigh) No, wait! I was just thinking we could do something special after that lunch! Maybe we could order a few special drinks or something?"
+    },
+    {
+      "profile": "compact",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1065,
+      "chars_per_byte": 7.245,
+      "encode_ms": 56904.82,
+      "decode_ms": 28816.26,
+      "cover_text": "I can work on that for you. I've been thinking about how we can work out a plan together. How was your week and what are your interests? How about we chat a bit later today, or do we meet this week? What sounds fun to you and me today? Are we going to a club, a movie or something? How's the coffee? I don' wanna be too casual, but we've talked about this in another one. I don't wanna be all fancy. Can we grab a drink? How does that feel to be so simple? What about coffee and a movie? I'm not too crazy about it. Do you have any idea about what would make for fun plans for you? I think we could also talk about a place we like or a book. We don't have to talk about anything fancy. Just something natural to do or a place or a thing we both would love. Do you have a favorite? I don't wana be to casual. I don t like to say so. I like to make this feel natural and normal. Do I sound to natural? I don t care. I can be normal too, just don't sound crazy to me. What do you want us do in a couple o' hours? What sounds fun to me? Should we plan something casual?"
+    },
+    {
+      "profile": "dense",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 117,
+      "chars_per_byte": 23.4,
+      "encode_ms": 3148.54,
+      "decode_ms": 1871.17,
+      "cover_text": "I'm free later this week, but I want you too. We could do something simple after work, like a walk or a quick coffee."
+    },
+    {
+      "profile": "dense",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 261,
+      "chars_per_byte": 8.419,
+      "encode_ms": 6355.19,
+      "decode_ms": 5673.6,
+      "cover_text": "I'm free to chat or text, but I'll suggest a couple alternatives to get you started. Maybe it could work for us. What do you think, are you free this Sunday? I was just thinking we could do a casual text conversation this week, something simple to get us going."
+    },
+    {
+      "profile": "dense",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1043,
+      "chars_per_byte": 7.095,
+      "encode_ms": 28814.47,
+      "decode_ms": 28600.3,
+      "cover_text": "I'd be up for it. How about a hike at the park tomorrow? I have a feeling it will get us in early to catch that sunset. What time were you planning to get in? The late-morning crowd is already busy, but I think we can squeeze us in. No worries about the meeting or whatever. You can just get on with your life, right? What do you say? We can't wait to meet later. Let me give you a map! (loves the phone) By the by we can meet at my place on the second floor. No, wait a minute, I think that's wrong. (said, but in one sentence) I'll get you the real one later. (looks up, expecting to find the address on the phone, but is unsure if I found it) Yeah! Alright! (said, but in one more sentence, but this time with a few words thrown inside) By the by I think I'm still trying on the glasses! (said, and then the text window closes again) Alright let's get going! You can just get me that map, I'm waiting for it. Just give me a minute to get the coordinates, okay! Bye! by the by I'm still trying on the new sunglasses! What's the weather like?"
+    }
+  ]
+}

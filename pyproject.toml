@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plain-conversation-crypto"
+version = "0.2.0"
+description = "Encrypted messages carried by deterministic or compact statistical language models"
+requires-python = ">=3.10"
+dependencies = [
+  "cryptography>=42",
+  "Brotli>=1.1",
+  "zstandard>=0.22",
+  "numpy>=1.26",
+  "tokenizers>=0.20",
+  "onnxruntime>=1.20",
+  "huggingface-hub>=0.25",
+]
+
+[project.scripts]
+pcc = "pcc.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["pcc*"]

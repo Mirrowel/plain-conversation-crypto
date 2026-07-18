@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "kind": "neural-onnx",
+  "name": "LFM2.5 350M conversational carrier Huffman-32",
+  "algorithm": "pcc-neural-huffman-v1",
+  "salt": "U21vbExNMkNhcnJpZXJWMiE=",
+  "model_file": "onnx/model_q4.onnx",
+  "model_data_file": "onnx/model_q4.onnx_data",
+  "tokenizer_file": "tokenizer.json",
+  "model_sha256": "d1a705712e93aafaba1346b32245fa59e7857a46e2272003c0e8c524977e0de8",
+  "model_data_sha256": "71ec6ad38a4c463dcb3dba671d06a1d9861be3a23e51290d818b95c0b7d2a5db",
+  "tokenizer_sha256": "29d43b4be8e8a896fefd7cd836ca6d6b4eedd249f823866ce0453b368e646f49",
+  "coding": "huffman",
+  "candidate_count": 32,
+  "intra_op_threads": 2,
+  "prompt": "Write one natural, coherent, casual text message between friends about ordinary plans later this week. Use one to three ordinary sentences. Do not mention instructions, prompts, or analysis. Message:"
+}
