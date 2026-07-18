@@ -4,7 +4,7 @@ import os
 import unittest
 
 from pcc.compression import DICTIONARY_SHA256, MODE_RAW, compression_candidates, compress_message, decompress_message
-from pcc.errors import FrameError, PCCError
+from pcc.errors import CapacityExceeded, FrameError, PCCError
 from pcc.model import HuffmanMarkovModel
 from pcc.pack import DialoguePack
 from pcc.v2 import decode_v2, encode_v2
@@ -75,6 +75,30 @@ class V2Tests(unittest.TestCase):
         plain["messages"] = [{"text": item["text"]} for item in transcript["messages"]]
         self.assertEqual(decode_v2(self.model, KEY, plain), b"hello")
 
+    def test_model_rejects_appended_cover_sentence(self):
+        transcript = encode_v2(self.model, KEY, b"hello", profile="secure", sequence=10)
+        transcript["messages"].append({"text": transcript["messages"][-1]["text"]})
+        with self.assertRaises(PCCError):
+            decode_v2(self.model, KEY, transcript)
+
+    def test_model_encoder_rejects_unreachable_sentence_end(self):
+        source = {
+            "schema": 1,
+            "kind": "markov",
+            "name": "no-end-model",
+            "salt": "MDEyMzQ1Njc4OWFiY2RlZg==",
+            "order": 1,
+            "contexts": [
+                {"context": [], "counts": [["alpha", 1], ["beta", 1]]},
+                {"context": ["<BOS>"], "counts": [["alpha", 1], ["beta", 1]]},
+                {"context": ["alpha"], "counts": [["alpha", 1], ["beta", 1]]},
+                {"context": ["beta"], "counts": [["alpha", 1], ["beta", 1]]},
+            ],
+        }
+        model = HuffmanMarkovModel.from_dict(source)
+        with self.assertRaises(CapacityExceeded):
+            model.encode_bits([0, 1] * 16, b"m" * 32, 0)
+
     def test_topic_model_round_trip_and_topic_is_stable(self):
         transcript = encode_v2(self.topic_model, KEY, b"hello", profile="dense", sequence=9, interleave=True)
         self.assertEqual(decode_v2(self.topic_model, KEY, transcript), b"hello")
@@ -86,9 +110,11 @@ class V2Tests(unittest.TestCase):
                 decode_v2(self.pack, "another completely different key", transcript)
 
     def test_interleave_changes_sealed_carrier_but_not_length(self):
-        ordered = encode_v2(self.pack, KEY, b"a longer message for interleaving", profile="secure", sequence=5)
+        ordered = encode_v2(
+            self.pack, KEY, b"a longer message for interleaving", profile="secure", sequence=5, interleave=False
+        )
         shuffled = encode_v2(
-            self.pack, KEY, b"a longer message for interleaving", profile="secure", sequence=5, interleave=True
+            self.pack, KEY, b"a longer message for interleaving", profile="secure", sequence=5
         )
         self.assertNotEqual(ordered["messages"], shuffled["messages"])
         self.assertEqual(len(ordered["messages"]), len(shuffled["messages"]))
@@ -101,6 +127,13 @@ class V2Tests(unittest.TestCase):
         tampered["messages"][0]["text"] = "not a valid pack member"
         with self.assertRaises(PCCError):
             decode_v2(self.pack, KEY, tampered)
+
+    def test_secure_pack_rejects_appended_valid_cover(self):
+        transcript = encode_v2(self.pack, KEY, b"hello", profile="secure", sequence=8)
+        extra = encode_v2(self.pack, KEY, b"another", profile="secure", sequence=9)
+        transcript["messages"].append(extra["messages"][0])
+        with self.assertRaises(PCCError):
+            decode_v2(self.pack, KEY, transcript)
 
 
 if __name__ == "__main__":

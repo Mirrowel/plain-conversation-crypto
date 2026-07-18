@@ -13,6 +13,7 @@ import hashlib
 import hmac
 import json
 import math
+import os
 import re
 import struct
 from collections import defaultdict
@@ -20,8 +21,12 @@ from pathlib import Path
 
 import numpy as np
 import onnxruntime as ort
+import tokenizers as tokenizers_runtime
 from tokenizers import Tokenizer
 
+from .arithmetic import Decoder as ArithmeticDecoder
+from .arithmetic import Encoder as ArithmeticEncoder
+from .arithmetic import frequency_table
 from .errors import CapacityExceeded, InvalidPack, PackMismatch
 from .framing import frame_target_from_bits
 from .limits import MAX_TRANSCRIPT_MESSAGES
@@ -44,7 +49,6 @@ class OnnxLanguageCarrier:
 
     def __init__(self, manifest: dict, model_id: str, salt: bytes, root: Path):
         self.raw = manifest
-        self.model_id = model_id
         self.name = manifest.get("name", "onnx-language-carrier")
         self.salt = salt
         self.root = root
@@ -62,11 +66,37 @@ class OnnxLanguageCarrier:
         options.intra_op_num_threads = int(manifest.get("intra_op_threads", 1))
         options.inter_op_num_threads = 1
         options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+        options.log_severity_level = 3
+        available = ort.get_available_providers()
+        provider_choice = os.environ.get("PCC_ONNX_PROVIDER", manifest.get("provider", "cpu")).casefold()
+        if provider_choice not in ("cpu", "cuda", "dml", "directml"):
+            raise InvalidPack("neural carrier provider must be cpu, cuda, or dml")
+        self.runtime_profile = (
+            f"provider={provider_choice};ort={ort.__version__};tokenizers={tokenizers_runtime.__version__};"
+            f"numpy={np.__version__};optimization=all;execution=sequential-if-dml"
+        )
+        self.model_id = hashlib.sha256(
+            b"pcc/v2/runtime\x00" + bytes.fromhex(model_id) + self.runtime_profile.encode("ascii")
+        ).hexdigest()
+        providers = ["CPUExecutionProvider"]
+        if "DmlExecutionProvider" in available and provider_choice in ("dml", "directml"):
+            options.enable_mem_pattern = False
+            options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
+            providers = ["DmlExecutionProvider", "CPUExecutionProvider"]
+        elif "CUDAExecutionProvider" in available and provider_choice == "cuda":
+            if hasattr(ort, "preload_dlls"):
+                ort.preload_dlls()
+            providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
         self.session = ort.InferenceSession(
             str(root / manifest["model_file"]),
             sess_options=options,
-            providers=["CPUExecutionProvider"],
+            providers=providers,
         )
+        self.provider = self.session.get_providers()[0]
+        if provider_choice == "cuda" and self.provider != "CUDAExecutionProvider":
+            raise InvalidPack("CUDA carrier provider was requested but could not be loaded")
+        if provider_choice in ("dml", "directml") and self.provider != "DmlExecutionProvider":
+            raise InvalidPack("DirectML carrier provider was requested but could not be loaded")
         self.input_names = {item.name for item in self.session.get_inputs()}
         self.output_names = [item.name for item in self.session.get_outputs()]
         self.past_names = sorted(name for name in self.input_names if name.startswith("past_"))
@@ -118,6 +148,8 @@ class OnnxLanguageCarrier:
             coding == "fixed" and isinstance(top_k, int) and top_k in (2, 4, 8, 16, 32)
         ) or (
             coding == "huffman" and isinstance(candidate_count, int) and candidate_count in (8, 16, 32, 64)
+        ) or (
+            coding == "arithmetic" and isinstance(candidate_count, int) and 2 <= candidate_count < 32768
         )
         if len(salt) < 16 or not valid_coding:
             raise InvalidPack("neural carrier parameters are invalid")
@@ -128,6 +160,12 @@ class OnnxLanguageCarrier:
 
     def _allowed_token_ids(self) -> list[int]:
         vocabulary_size = self.tokenizer.get_vocab_size(with_added_tokens=True)
+        disallowed_words = {
+            "assistant", "example", "format", "input", "instruction", "instructions",
+            "message", "messages", "metadata", "note", "output", "prompt", "prompts",
+            "participant", "participants", "recipient", "recipients", "response", "role",
+            "sender", "sent", "system", "timestamp", "transcript", "user", "analysis",
+        }
         allowed = []
         for token_id in range(vocabulary_size):
             try:
@@ -137,6 +175,10 @@ class OnnxLanguageCarrier:
             if not text or not text.strip() or any(ord(char) < 32 for char in text):
                 continue
             if any(char in text for char in ('"', '`', '<', '>', '#', '*', '“', '”')):
+                continue
+            if any(char.isdigit() for char in text):
+                continue
+            if text.strip(" .,!?;'-_").casefold() in disallowed_words:
                 continue
             allowed.append(token_id)
         return allowed
@@ -260,6 +302,14 @@ class OnnxLanguageCarrier:
                 token_to_code[token_id] = token_code
         return token_to_code, {token_code: token_id for token_id, token_code in token_to_code.items()}, max(lengths.values())
 
+    def _arithmetic_book(self, logits: np.ndarray, attempt: int = 0):
+        quantized, candidates = self._ranked(logits, self.candidate_count)
+        scores = [float(quantized[token_id]) / 256.0 for token_id in candidates]
+        lengths = [max(1, len(self.tokenizer.decode([token_id], skip_special_tokens=False).strip())) for token_id in candidates]
+        temperature = float(self.raw.get("temperature", 1.0)) * (1.0 + 0.15 * attempt)
+        cumulative = frequency_table(scores, lengths, temperature=temperature, length_bias=float(self.raw.get("length_bias", 0.1)))
+        return candidates, cumulative
+
     def _greedy(self, logits: np.ndarray) -> int:
         quantized = np.rint(logits * 256.0).astype(np.int64)
         return max(self.allowed_ids, key=lambda token_id: (int(quantized[token_id]), -token_id))
@@ -271,6 +321,32 @@ class OnnxLanguageCarrier:
         token_ids: list[int] = []
         bit_offset = 0
         position = 0
+        arithmetic_decoder = None
+        arithmetic_encoder = None
+        confirmed = 0
+        desynchronized = False
+        read_offset = 0
+
+        def source_bit(offset: int) -> int:
+            if offset < len(bits):
+                return bits[offset]
+            return 1 if (offset - len(bits)) % 2 == 0 else 0
+
+        def read_source() -> int:
+            nonlocal read_offset
+            value = source_bit(read_offset)
+            read_offset += 1
+            return value
+
+        def emit(bit: int) -> None:
+            nonlocal confirmed, desynchronized
+            if bit != source_bit(confirmed):
+                desynchronized = True
+            confirmed += 1
+
+        if self.coding == "arithmetic":
+            arithmetic_decoder = ArithmeticDecoder(read_source)
+            arithmetic_encoder = ArithmeticEncoder(emit)
         while bit_offset < len(bits):
             if self.coding == "fixed":
                 candidates = self._candidates(logits, mapping_key, sequence, position, attempt)
@@ -279,7 +355,7 @@ class OnnxLanguageCarrier:
                     label = (label << 1) | (bits[bit_offset] if bit_offset < len(bits) else 0)
                     bit_offset += 1
                 token_id = candidates[label]
-            else:
+            elif self.coding == "huffman":
                 _, code_to_token, max_length = self._huffman_book(logits, mapping_key, sequence, position, attempt)
                 prefix = ""
                 while prefix not in code_to_token:
@@ -288,9 +364,19 @@ class OnnxLanguageCarrier:
                     if len(prefix) > max_length:
                         raise CapacityExceeded("neural Huffman tree is incomplete")
                 token_id = code_to_token[prefix]
+            else:
+                candidates, cumulative = self._arithmetic_book(logits, attempt)
+                assert arithmetic_decoder is not None and arithmetic_encoder is not None
+                symbol = arithmetic_decoder.symbol(cumulative)
+                arithmetic_encoder.symbol(symbol, cumulative)
+                if desynchronized:
+                    raise CapacityExceeded("neural arithmetic coder desynchronized")
+                token_id = candidates[symbol]
             token_ids.append(token_id)
             past, logits, context_length = self._step(past, token_id, context_length)
             position += 1
+            if self.coding == "arithmetic" and confirmed >= len(bits):
+                break
             if position > max(512, len(bits) * 2):
                 raise CapacityExceeded("neural carrier exceeded token limit")
         # Greedy continuation closes the carrier at a natural sentence boundary.
@@ -321,6 +407,12 @@ class OnnxLanguageCarrier:
         words = [word.casefold() for word in re.findall(r"[A-Za-z][A-Za-z']+", text)]
         if len(words) < 8:
             return False
+        sentences = [sentence.strip().casefold() for sentence in re.split(r"[.!?]+", text) if sentence.strip()]
+        if len(sentences) != len(set(sentences)):
+            return False
+        trigrams = [tuple(words[index : index + 3]) for index in range(len(words) - 2)]
+        if any(trigrams.count(trigram) >= 3 for trigram in set(trigrams)):
+            return False
         for index in range(len(words) - 3):
             if words[index : index + 3] == words[index + 3 : index + 6]:
                 return False
@@ -334,9 +426,14 @@ class OnnxLanguageCarrier:
             raise PackMismatch("neural carrier message is empty")
         past, logits, context_length = self._start()
         bits: list[int] = []
+        arithmetic_encoder = None
+        if self.coding == "arithmetic":
+            arithmetic_encoder = ArithmeticEncoder(bits.append)
+        data_end = len(token_ids)
         for position, token_id in enumerate(token_ids):
             frame_target = frame_target_from_bits(bits)
             if frame_target is not None and len(bits) >= frame_target[1]:
+                data_end = position
                 break
             if self.coding == "fixed":
                 candidates = self._candidates(logits, mapping_key, sequence, position, attempt)
@@ -344,11 +441,38 @@ class OnnxLanguageCarrier:
                     raise PackMismatch("text token is outside the neural carrier candidate set")
                 label = candidates.index(token_id)
                 bits.extend((label >> bit) & 1 for bit in range(self.bits_per_token - 1, -1, -1))
-            else:
+            elif self.coding == "huffman":
                 token_to_code, _, _ = self._huffman_book(logits, mapping_key, sequence, position, attempt)
                 code = token_to_code.get(token_id)
                 if code is None:
                     raise PackMismatch("text token is outside the neural Huffman candidate set")
                 bits.extend(int(bit) for bit in code)
+            else:
+                candidates, cumulative = self._arithmetic_book(logits, attempt)
+                if token_id not in candidates:
+                    raise PackMismatch("text token is outside the neural arithmetic candidate set")
+                assert arithmetic_encoder is not None
+                arithmetic_encoder.symbol(candidates.index(token_id), cumulative)
             past, logits, context_length = self._step(past, token_id, context_length)
+        target = frame_target_from_bits(bits)
+        if target is not None and len(bits) >= target[1]:
+            trailing = bits[target[1] :]
+            if self.coding == "arithmetic":
+                for index, bit in enumerate(trailing):
+                    if bit != (1 if index % 2 == 0 else 0):
+                        raise PackMismatch("neural arithmetic carrier has invalid sentinel padding")
+            elif any(trailing):
+                raise PackMismatch("neural carrier has non-zero final code padding")
+            del bits[target[1] :]
+
+        expected_finish: list[int] = []
+        for _ in range(32):
+            text = self.tokenizer.decode(token_ids[:data_end] + expected_finish, skip_special_tokens=True)
+            if len(text) > 40 and re.search(r"[.!?]['\"]?$", text.rstrip()):
+                break
+            token_id = self._greedy(logits)
+            expected_finish.append(token_id)
+            past, logits, context_length = self._step(past, token_id, context_length)
+        if token_ids[data_end:] != expected_finish:
+            raise PackMismatch("neural carrier does not have its canonical finishing suffix")
         return bits

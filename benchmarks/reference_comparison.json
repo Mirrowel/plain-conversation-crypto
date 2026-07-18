@@ -1,0 +1,29 @@
+{
+  "reference_repository": "C:/Projects/conversation-steganography",
+  "reference_runtime_executed": false,
+  "reference_runtime_blocker": "Go toolchain and exact local model runtime were unavailable",
+  "reference_source_facts": {
+    "top_n_transformers": 8,
+    "top_n_other_runtimes": 256,
+    "coding": "arithmetic",
+    "candidate_pool": 8,
+    "carrier_trials": 2,
+    "temperature": 1.0,
+    "length_bias": 0.1,
+    "finish_tokens": 32,
+    "strict_style": true,
+    "hello_packed_bytes": 2,
+    "hello_authentication_bytes": 16,
+    "hello_frame_length_bytes_arithmetic_default": 0,
+    "hello_hidden_bits_arithmetic_default": 144,
+    "theoretical_max_data_bits_per_token_transformers": 3
+  },
+  "v2_measured": {
+    "semantic_pack_secure_hello": {"bubbles": 12, "visible_chars": 1551},
+    "semantic_pack_compact_hello": {"bubbles": 7, "visible_chars": 833},
+    "semantic_pack_dense_hello": {"bubbles": 2, "visible_chars": 223},
+    "smollm360_arithmetic32_dense_hello": {"bubbles": 1, "visible_chars": 133},
+    "gemma3_arithmetic32_dense_hello": {"bubbles": 1, "visible_chars": 93, "source": "model_spot_checks.json"}
+  },
+  "interpretation": "The reference and neural V2 carriers have comparable short-message hidden budgets; the reference has stronger rolling conversation coherence, while V2 has explicit no-auth density and no-model options."
+}

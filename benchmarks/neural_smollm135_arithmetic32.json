@@ -1,0 +1,104 @@
+{
+  "carrier_id": "f9acdae13441b7c1a7bb83b8181087837a662930dee3cc777211fdf0929d231b",
+  "rows": [
+    {
+      "profile": "secure",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 284,
+      "chars_per_byte": 56.8,
+      "encode_ms": 5429.92,
+      "decode_ms": 4845.53,
+      "cover_text": "I'm sorry for the confusion, but I'm a chatbot. I'm not here to help with planning anything for you outside of working. It's a good idea to confirm you're here for a plan for another week. If you need something else in the same group, I would be happy to help you find something else."
+    },
+    {
+      "profile": "secure",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 349,
+      "chars_per_byte": 11.258,
+      "encode_ms": 6995.95,
+      "decode_ms": 6796.91,
+      "cover_text": "I'm not free tonight. I'm sure we can work something out, but it's not urgent, so let's move. It's okay to not meet again. Maybe we can do something casual. You guys need help or some snacks? I don't have any sleep deprivation plans for now. Do you have food available tonight? I'll have it waiting for you at the grocery store. Let's get this done."
+    },
+    {
+      "profile": "secure",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1325,
+      "chars_per_byte": 9.014,
+      "encode_ms": 25513.27,
+      "decode_ms": 24181.71,
+      "cover_text": "I would actually like to do something on an interesting theme at work. I was thinking we could do a blog on sustainable fashion, or perhaps even some creative projects involving plants or nature. I don't know if you're up for that, but I'll do my best to accommodate you. Have a look! Maybe we could even plan a scavenger hunt, like the one above but for a more casual or even playful kind of adventure. Let me know what you think! If we don't get done on Thursday, then we could do something a bit more out of the ordinary on Tuesday or Thursday, depending on how much we can do at once. You're welcome to join us or pick one of your own ideas! Go grab some lunch! It'll be fun. You can talk to me on the phone next, maybe even get a call or email. We can also use social media to spread our ideas. Just let me know! If you're up for it, we can make it up the week and you can come back to tomorrow! You want to know more about my blog? If not, then why not? We could do a few small blog posts on plant-based diets and my friends would love it, especially my sister who loves gardening and her new vegetable plot. Do you have any ideas yet, or is it a bit of a new idea for you to try out? How about we do something special on Tuesday? That would be awesome! Have a great weekend! How about we do something fun on Wednesday?"
+    },
+    {
+      "profile": "compact",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 157,
+      "chars_per_byte": 31.4,
+      "encode_ms": 3110.98,
+      "decode_ms": 2899.02,
+      "cover_text": "I'm glad we could have a casual text conversation about simple goals after a long day. I'm not sure what you were thinking, so don't worry, I'm here to help."
+    },
+    {
+      "profile": "compact",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 297,
+      "chars_per_byte": 9.581,
+      "encode_ms": 5199.74,
+      "decode_ms": 5094.92,
+      "cover_text": "I'm sorry, but I'm afraid we may not be in the mood for a traditional conversation just like we agreed that the next session would be in the evening, no late evening conversation permitted. Our usual plan for this week is to be around the same time. This evening, however, we can do something new."
+    },
+    {
+      "profile": "compact",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1188,
+      "chars_per_byte": 8.082,
+      "encode_ms": 24867.04,
+      "decode_ms": 24284.55,
+      "cover_text": "I think the question is about my plans on how I'm going to move on after my last month. It sounds like it's about moving to a new city, so I'm not sure how this will look like that in the details. I'll try to provide more context if you'll take a look at my daily plans so you can get more insight into my schedule. Is that okay with you? I'll see what I can do. Let me know! This is just a simple plan for moving on. Good idea! We'll do this soon! Stay tuned! Is that okay with you? I'll see what I can find for you. Are you a friend this week? Maybe you can share a common action plan for moving to a new city? What if you want to share a common idea for moving to a new city? That's fine. We'll look into this together! I'll check the plans I gave you. Is that okay with you? I'll see what I can find for you. Have you seen this summer? Did you get to go on a trip like this? Do you think you'll be able to do it soon? Can you share a common idea for moving to a new city? I'm not sure this week will be ideal, but I'm open to helping you move on now. I can do this! Stay tuned! I'll do a quick read in here and then I'll check my plans as we discuss how you'll look at my daily plans."
+    },
+    {
+      "profile": "dense",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 96,
+      "chars_per_byte": 19.2,
+      "encode_ms": 1644.65,
+      "decode_ms": 1282.21,
+      "cover_text": "I'm glad you found the message interesting. Let's try to find something simple to do after work."
+    },
+    {
+      "profile": "dense",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 293,
+      "chars_per_byte": 9.452,
+      "encode_ms": 5017.03,
+      "decode_ms": 4376.34,
+      "cover_text": "I'm sorry for the misunderstanding. We have busy days to get straight to work as I'm free after work. We can discuss plans for the week as normal. Would you like to do an early morning meeting to discuss plans in the morning? I'm here to help you with any tasks or projects you need help with."
+    },
+    {
+      "profile": "dense",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1128,
+      "chars_per_byte": 7.673,
+      "encode_ms": 21179.1,
+      "decode_ms": 21863.68,
+      "cover_text": "I hope this all finds you well with your goals. I'm reaching out from a busy schedule which often complicates our plans, though some day could be much better if I can help you with something more. Here's a suggestion on how we can begin our evening's conversations: we might focus on the following topics: coffee, movie nights, or the weather. I've got a new favorite book or magazine I read recently, and I'd love to hear about what you're reading and what you're enjoying while you watch that book on your screen. I can offer some recommendations depending on your interests. It'll be nice to know where you look in a week ahead - I'm thinking light reads, movies, or music on your screen. Please let me know how our evening off day goes. Thanks a lot for thinking of me, and I look forward to our evening conversations. And thank you for being here today, I'm enjoying them even more than I usually do! (This seems to happen a lot in my life lately, I think.) I hope you're having a good time! Keep checking back tomorrow. Good night! (This seems to happen a lot in my life lately, I think.) I hope you're having a good time!"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 
 from pcc.neural import OnnxLanguageCarrier
+from pcc.errors import PCCError
 from pcc.v2 import decode_v2, encode_v2
 
 
@@ -27,7 +28,17 @@ def main() -> int:
     for profile in ("secure", "compact", "dense"):
         for sequence, (name, plaintext) in enumerate(SAMPLES.items()):
             started = time.perf_counter()
-            transcript = encode_v2(carrier, args.key, plaintext, profile=profile, sequence=sequence)
+            try:
+                transcript = encode_v2(carrier, args.key, plaintext, profile=profile, sequence=sequence)
+            except PCCError as exc:
+                rows.append({
+                    "profile": profile,
+                    "sample": name,
+                    "plaintext_bytes": len(plaintext),
+                    "error": str(exc),
+                    "encode_ms": round((time.perf_counter() - started) * 1000, 2),
+                })
+                continue
             encode_ms = (time.perf_counter() - started) * 1000
             started = time.perf_counter()
             recovered = decode_v2(carrier, args.key, transcript)

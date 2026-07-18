@@ -1,0 +1,37 @@
+{
+  "kind": "exploratory-spot-check",
+  "note": "single dense hello sample; not a quality benchmark",
+  "rows": [
+    {
+      "manifest": "models/gemma3-270m-q4/carrier-arithmetic32.json",
+      "profile": "dense",
+      "plaintext": "hello",
+      "provider": "CPUExecutionProvider",
+      "load_ms": 4458.69,
+      "encode_ms": 9366.73,
+      "visible_chars": 93,
+      "text": "Okay, I'm just a little bit confused. I'm starting to think well, I'm starting to think well.",
+      "status": "round_trip_checked"
+    },
+    {
+      "manifest": "models/qwen3-0.6b-int8/carrier-arithmetic32.json",
+      "profile": "dense",
+      "plaintext": "hello",
+      "provider": "CPUExecutionProvider",
+      "load_ms": 4435.81,
+      "encode_ms": 7565.02,
+      "visible_chars": 86,
+      "text": "OST: I'm sorry, I can't help with that. But there's a lot of work to do, and I'm busy.",
+      "status": "round_trip_checked"
+    },
+    {
+      "manifest": "models/lfm2.5-350m-q4/carrier-arithmetic32.json",
+      "profile": "dense",
+      "plaintext": "hello",
+      "provider": "CPUExecutionProvider",
+      "load_ms": 1768.16,
+      "status": "failed",
+      "error": "neural carrier tokenization is not reversible"
+    }
+  ]
+}

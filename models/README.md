@@ -18,6 +18,12 @@ Available artifacts:
 | Gemma3-270M Q4 | 323 MB plus tokenizer | `models/gemma3-270m-q4/carrier-huffman32.json` | Rejected in this carrier experiment |
 | LFM2.5-350M Q4 | 294 MB | `models/lfm2.5-350m-q4/carrier-huffman32.json` | Rejected due to generated repetition |
 
+Arithmetic manifests (`carrier-arithmetic8.json` and
+`carrier-arithmetic32.json`) reproduce the reference repository's
+probability-weighted coding experiment. Arithmetic-32 is denser; arithmetic-8
+is more conservative but can be much longer. See
+`docs/optimization_report.md` for measured failures and quality tradeoffs.
+
 The manifests pin model and tokenizer SHA-256 hashes. A model file is protocol
 material, not a cryptographic secret. The passphrase remains the security key.
 

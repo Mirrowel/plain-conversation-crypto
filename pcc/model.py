@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .errors import CapacityExceeded, InvalidPack, PackMismatch
+from .framing import frame_target_from_bits
 from .limits import MAX_TRANSCRIPT_MESSAGES
 
 BOS = "<BOS>"
@@ -311,7 +312,7 @@ class HuffmanMarkovModel:
                 current.append(token)
             history = self._advance(history, token, self.order)
         if current:
-            messages.append(" ".join(current) + ".")
+            raise CapacityExceeded("statistical model could not reach a canonical sentence ending")
         if not messages:
             raise CapacityExceeded("statistical model produced no carrier text")
         return messages
@@ -320,6 +321,9 @@ class HuffmanMarkovModel:
         history = [BOS]
         cache: dict = {}
         bits: list[int] = []
+        data_complete = False
+        finish_complete = False
+        current_words = 0
         for message in messages:
             if not isinstance(message, str) or not message.strip():
                 raise PackMismatch("statistical carrier contains an empty message")
@@ -327,12 +331,40 @@ class HuffmanMarkovModel:
             if not tokens or _render_tokens(tokens) != message:
                 raise PackMismatch("statistical carrier message is malformed")
             for token in tokens:
+                if data_complete:
+                    if finish_complete:
+                        raise PackMismatch("statistical carrier has trailing tokens after its canonical finish")
+                    context, counts = self._counts(history)
+                    del context
+                    expected = END if END in counts else max(counts, key=lambda candidate: (counts[candidate], candidate))
+                    if token != expected:
+                        raise PackMismatch("statistical carrier has an invalid finishing token")
+                    history = self._advance(history, token, self.order)
+                    if token == END:
+                        current_words = 0
+                        finish_complete = True
+                    else:
+                        current_words += 1
+                    continue
                 book = self._codebook(history, mapping_key, sequence, cache)
                 code = book.token_to_code.get(token)
                 if code is None:
                     raise PackMismatch("text does not belong to the statistical model")
                 bits.extend(int(bit) for bit in code)
                 history = self._advance(history, token, self.order)
+                if token == END:
+                    current_words = 0
+                else:
+                    current_words += 1
+                target = frame_target_from_bits(bits)
+                if target is not None and len(bits) >= target[1]:
+                    if any(bits[target[1] :]):
+                        raise PackMismatch("statistical carrier has non-zero final code padding")
+                    del bits[target[1] :]
+                    data_complete = True
+                    finish_complete = current_words == 0
+        if data_complete and not finish_complete:
+            raise PackMismatch("statistical carrier ended before its canonical finish")
         return bits
 
 

@@ -1,0 +1,16 @@
+{
+  "hardware": "NVIDIA GeForce GTX 1060 6GB, Windows driver 572.83, CUDA 12.8",
+  "model": "SmolLM2-360M INT8 arithmetic-32",
+  "profile": "dense",
+  "payload": "147-byte paragraph",
+  "comparison_scope": "historical one-off provider study; not directly comparable to the main neural benchmark because runtime versions and selected quality attempt were not recorded",
+  "rows": [
+    {"provider": "CPUExecutionProvider", "load_seconds": 3.45, "encode_seconds": 28.252, "visible_chars": 972},
+    {"provider": "CUDAExecutionProvider", "load_seconds": 5.328, "encode_seconds": 95.435, "visible_chars": 2784}
+  ],
+  "notes": [
+    "Sequential token generation made provider transfer overhead dominate.",
+    "Provider-level numeric differences changed generated token choices.",
+    "This is a local study, not a universal GPU performance claim."
+  ]
+}

@@ -134,20 +134,28 @@ def _main() -> int:
     encode_v2_parser = sub.add_parser("encode-v2", help="compress, encrypt, and encode one V2 logical message")
     encode_v2_parser.add_argument("--carrier", required=True, help="dialogue pack or statistical model JSON")
     encode_v2_parser.add_argument("--profile", choices=PROFILES, default="secure")
+    encode_v2_parser.add_argument("--allow-unsafe-dense", action="store_true", help="required for the unauthenticated dense profile")
     encode_v2_parser.add_argument("--key", help="unsafe convenience option; omitted values are prompted securely")
     encode_v2_parser.add_argument("--message", help="unsafe convenience option; otherwise read bytes from stdin")
     encode_v2_parser.add_argument("--message-file")
     encode_v2_parser.add_argument("--sequence", type=int)
-    encode_v2_parser.add_argument("--interleave", action="store_true", help="key-permute sealed bytes before carrier encoding")
+    encode_v2_parser.add_argument(
+        "--no-interleave", action="store_false", dest="interleave", default=True,
+        help="disable the default keyed permutation of sealed bytes",
+    )
     encode_v2_parser.add_argument("--plain-output", action="store_true", help="emit only blank-line-separated cover messages")
     encode_v2_parser.add_argument("--output")
 
     decode_v2_parser = sub.add_parser("decode-v2", help="decode one V2 logical message")
     decode_v2_parser.add_argument("--carrier", required=True)
     decode_v2_parser.add_argument("--profile", choices=PROFILES, default="secure")
+    decode_v2_parser.add_argument("--allow-unsafe-dense", action="store_true", help="required for the unauthenticated dense profile")
     decode_v2_parser.add_argument("--key", help="unsafe convenience option; omitted values are prompted securely")
     decode_v2_parser.add_argument("--sequence", type=int)
-    decode_v2_parser.add_argument("--interleave", action="store_true")
+    decode_v2_parser.add_argument(
+        "--no-interleave", action="store_false", dest="interleave", default=True,
+        help="decode plain input that was encoded without byte interleaving",
+    )
     decode_v2_parser.add_argument("--plain-input", action="store_true", help="read blank-line-separated cover messages")
     decode_v2_parser.add_argument("--input")
 
@@ -155,7 +163,10 @@ def _main() -> int:
     benchmark.add_argument("--pack", required=True)
     benchmark.add_argument("--model", required=True)
     benchmark.add_argument("--key", help="unsafe convenience option; omitted values are prompted securely")
-    benchmark.add_argument("--interleave", action="store_true")
+    benchmark.add_argument(
+        "--no-interleave", action="store_false", dest="interleave", default=True,
+        help="benchmark ordered sealed bytes instead of the default interleaving",
+    )
     benchmark.add_argument("--output")
 
     compression_benchmark = sub.add_parser("compression-benchmark", help="compare every lossless compression candidate")
@@ -243,6 +254,8 @@ def _main() -> int:
             sys.stdout.write(output)
         return 0
     if args.command == "encode-v2":
+        if args.profile == "dense" and not args.allow_unsafe_dense:
+            raise ValueError("dense profile is unauthenticated; pass --allow-unsafe-dense explicitly")
         if args.message is not None and args.message_file is not None:
             raise ValueError("use only one of --message and --message-file")
         if args.message_file:
@@ -275,6 +288,8 @@ def _main() -> int:
             sys.stdout.write(output)
         return 0
     if args.command == "decode-v2":
+        if args.profile == "dense" and not args.allow_unsafe_dense:
+            raise ValueError("dense profile is unauthenticated; pass --allow-unsafe-dense explicitly")
         carrier = _carrier(args.carrier)
         if args.plain_input and args.sequence is None:
             raise ValueError("plain V2 input requires the sender's --sequence")

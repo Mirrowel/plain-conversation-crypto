@@ -1,0 +1,104 @@
+{
+  "carrier_id": "34f1b3a35f433a12866a524b1824dfe209f80c6fffa8a4d62493c7d8d29d5a1f",
+  "rows": [
+    {
+      "profile": "secure",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 210,
+      "chars_per_byte": 42.0,
+      "encode_ms": 6608.42,
+      "decode_ms": 6311.97,
+      "cover_text": "I'm free later this week! We can do an easy thing after work. Maybe something fun on a weekend or after dinner. I'm free any day, anytime. You don't have to wait for a busy hour. We can grab whatever is around."
+    },
+    {
+      "profile": "secure",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 469,
+      "chars_per_byte": 15.129,
+      "encode_ms": 13645.82,
+      "decode_ms": 12166.92,
+      "cover_text": "I'm free for a casual chat later this week. It's just after work, so we can catch up on our plans. I can be as informal as normal. Let's do something fun. Maybe a walk after work? We can plan something out, see where it takes us. No special setup or equipment needed! Just a casual, regular outing. How about we start early? Can you suggest a good time? Or where we'd like to go? I'm excited to plan something fun with you. Sound good? I'm free to chat later this week."
+    },
+    {
+      "profile": "secure",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1083,
+      "chars_per_byte": 7.367,
+      "encode_ms": 33220.2,
+      "decode_ms": 32466.03,
+      "cover_text": "I have one or two in mind that I'm not too busy for. What is it you're thinking? Or would you like to wait a few minutes to check, or should I do something else while you wait? We can be on our way later if that works for you. Just let me know. I can also get the details. It's not a big time sink for me. Let's try a quick one. Say it in three, okay? Let me think of something that works, and we can do it later when I can take it. I think we can do one of those, okay? I'd rather do something in the car. Or if you're free on a Thursday? Or what? I can't remember what the next plan is. I'll come up with it. Just let me give it a whirl. I don't have to say much. What I'd like to is you to go down to the coffee shop on the way so we can meet. I'd rather we meet there. We can also be on the way when I need to run. What's up? I'll do my best to make it work. I'm not free then, though. I have a call tonight. Is that a problem or okay? You do okay? What's your plan? I'll wait while you have a chance to respond. Just to check, are we free on Friday? Or are you free on Thursday?"
+    },
+    {
+      "profile": "compact",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 166,
+      "chars_per_byte": 33.2,
+      "encode_ms": 4694.19,
+      "decode_ms": 4400.12,
+      "cover_text": "I'm free later this week. You and me could work on something simple. How about a small project? I haven't picked up the right tools for it, so I'd love to brainstorm."
+    },
+    {
+      "profile": "compact",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 300,
+      "chars_per_byte": 9.677,
+      "encode_ms": 8374.4,
+      "decode_ms": 8269.82,
+      "cover_text": "I'm free to do the simple after work thing later this week - can't wait! We can make it something fun, whether it's a game, a workout, or, hey, maybe a hike... or even a hike with one of our furry friends or something. Or a hike with one of our plants or something fun like a plant walk or something."
+    },
+    {
+      "profile": "compact",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1190,
+      "chars_per_byte": 8.095,
+      "encode_ms": 31872.99,
+      "decode_ms": 29185.46,
+      "cover_text": "I am free to plan a casual text plan for later this week I was thinking we could do something simple like going for a hike, a walk, or maybe to a concert to kill some time, you know, anything to relax. What do you say? I love it. We could do it all. I have to say though, I still like you, by the way we have been friends for like nigh on five years or so we have always talked about doing something together. Just don't mind my plans. Don't worry, I don't have a crush on you, I think you are the coolest thing. I will tell you a secret, I love when we finish a plan and we are still in the mood for it, we just hang out and relax, I know you are a smart girl with a lot of money, do you ever get bored when the plans all come together? Yes, and it all starts to make sense to you. I am pretty sure we just had a plan on whether you know how or not. I will tell you, I love you, you know this, you are an interesting girl. Is there anything we can do together, you're an amazing writer so I can just give you a shout on the one side of the text. You know, I am pretty sure we are going to have a plan for something to do together, I am pretty sure we are going to have a plan for something"
+    },
+    {
+      "profile": "dense",
+      "sample": "hello",
+      "plaintext_bytes": 5,
+      "messages": 1,
+      "visible_chars": 133,
+      "chars_per_byte": 26.6,
+      "encode_ms": 3856.1,
+      "decode_ms": 3134.08,
+      "cover_text": "I'm free later this week. I was thinking we could do something simple after work. We could have a walk in the park or a quick coffee."
+    },
+    {
+      "profile": "dense",
+      "sample": "short-chat",
+      "plaintext_bytes": 31,
+      "messages": 1,
+      "visible_chars": 228,
+      "chars_per_byte": 7.355,
+      "encode_ms": 5907.26,
+      "decode_ms": 5495.57,
+      "cover_text": "I'm free later this week to go to a book with my sister. How about we grab coffee and we can talk about it. We could sit down and have this conversation. We are all free to join in. I was thinking a few minutes to talk about it."
+    },
+    {
+      "profile": "dense",
+      "sample": "paragraph",
+      "plaintext_bytes": 147,
+      "messages": 1,
+      "visible_chars": 1372,
+      "chars_per_byte": 9.333,
+      "encode_ms": 43224.64,
+      "decode_ms": 42149.83,
+      "cover_text": "I was thinking we could do something simple after work, like a walk around the block or a quick chat online or on a phone. Nothing too intense and easy. How about a low-key activity like that? What sounds fun to you? Is there a special plan you had in mind? Sound good? No I'm free later this week. You were thinking simple. How about a quick walk to work? How's it going? How was your busy morning. Just okay? I'm free. I have to go. You can call me later. Just okay? No I'm free. What's up? What's up? No, I'm free. How about a simple chat? No, I'm free. You ready? No, I'm free. You can call me later? No, I'm free. You still up? No, I'm free. How about a walk to work? How are you up? No, I'm free. You can call me later? No, I'm free. You can call me later? Ok, so you ready? No, I'm a little hesitant. How about a walk to work? How are you up? No, I'll try, but still a little hesitant. No, I'm okay to do it. You still, can you just leave the door open? No, I'll try, but still a little hesitant. You can call me later? No, I'm okay to do it. What's up? How are you? No, I'm okay to do it. You still, can you be on the phone for a few minutes? No, I'll try, but still a little hesitant. You can call me later? No, you still a little hesitant. So you still a little up? No, I'm okay to call. You can call me later? No, I'm okay. What's up? No, I'm okay on the phone."
+    }
+  ]
+}

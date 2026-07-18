@@ -14,6 +14,27 @@ cover bubbles; separate hidden messages are not batched by the basic protocol.
 python -m pip install -e .
 ```
 
+On Windows, install the optional DirectML runtime to use a compatible GPU:
+
+```sh
+python -m pip install -e ".[gpu-windows]"
+```
+
+For a CUDA 12 GPU and driver, install the pinned CUDA runtime profile instead:
+
+```sh
+python -m pip install -e ".[gpu-cuda12]"
+```
+
+CPU inference is the protocol default. Set `PCC_ONNX_PROVIDER=cuda` or `dml`
+only when both peers use the same provider/runtime and intentionally select the
+provider-specific carrier ID. Provider outputs are not assumed numerically
+identical across hardware. On the tested GTX 1060, the quantized SmolLM graph
+was slower on CUDA because provider copies dominated sequential generation.
+The carrier ID also binds ONNX Runtime, tokenizer, NumPy, and graph-execution
+settings; cross-machine determinism vectors are still required before calling
+neural transport portable.
+
 The runtime has no network requirement and no LLM requirement. Optional neural
 carriers use local ONNX files. Download one separately:
 
@@ -42,7 +63,7 @@ For copy/paste-oriented output, omit the JSON wrapper:
 ```sh
 python -m pcc encode-v2 \
   --carrier packs/semantic_demo.json \
-  --profile dense \
+  --profile secure \
   --message "hello" \
   --sequence 1 \
   --plain-output > cover.txt
@@ -54,7 +75,7 @@ blank-line-separated cover bubbles with:
 ```sh
 python -m pcc decode-v2 \
   --carrier packs/semantic_demo.json \
-  --profile dense \
+  --profile secure \
   --sequence 1 \
   --plain-input < cover.txt
 ```
@@ -64,7 +85,7 @@ The same commands work with a model manifest instead of a dialogue pack:
 ```sh
 python -m pcc encode-v2 \
   --carrier models/smollm2-360m-int8/carrier-huffman16.json \
-  --profile dense \
+  --profile secure \
   --message "hello" \
   --sequence 1 \
   --plain-output > cover.txt
@@ -88,16 +109,21 @@ use a deliberately weak encryption algorithm. The density improvement comes
 from removing or reducing authentication overhead. `dense` must not be used
 where undetected tampering matters.
 
+The CLI requires `--allow-unsafe-dense` for the unauthenticated dense profile.
+
 Compact and dense mode sequences must never repeat under the same key and
 carrier. Reuse repeats the ChaCha20 keystream and can expose relationships
 between plaintexts. JSON output generates a random sequence when omitted;
 plain copy/paste output requires an explicit sequence that the receiver also
 supplies.
 
-All profiles compress before encryption. A keyed interleaving option can be
-enabled with `--interleave`; it pseudorandomly permutes sealed bytes before
-carrier encoding without adding visible data. This is obfuscation, not extra
-cryptographic strength.
+Library callers must always pass `sequence` explicitly. The CLI generates a
+random sequence only for JSON output, where it is carried in the local wrapper.
+
+All profiles compress before encryption. Keyed interleaving is enabled by
+default: it pseudorandomly permutes sealed bytes before carrier encoding
+without adding visible data. Both sides can explicitly opt out with
+`--no-interleave`. This is obfuscation, not extra cryptographic strength.
 
 ## Carriers
 
@@ -133,7 +159,11 @@ equally often.
 
 The 135M sibling is lighter but more generic. Huffman-32 is denser but produces
 enough odd word choices that it remains experimental. Gemma3-270M, Qwen3-0.6B,
-meet the normality bar. See the model README and benchmark artifacts.
+and LFM2.5-350M were also tested. Arithmetic coding improved some samples, but
+none of those models is currently accepted as indistinguishable human text.
+See the model README and benchmark artifacts. Neural quality checks fail closed
+after their configured attempts; they are heuristics, not a proof of human
+indistinguishability.
 
 ## Compression
 
@@ -196,6 +226,9 @@ The current engineering conclusion is:
   quality reduction.
 - Higher branching increases nominal density but quickly violates the normal
   text requirement.
+
+The full source-based reference comparison, model sweep, arithmetic-coding
+experiment, and GPU timing study are in `docs/optimization_report.md`.
 
 ## Security Boundary
 

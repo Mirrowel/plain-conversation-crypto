@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "kind": "neural-onnx",
+  "name": "Gemma 3 270M conversational carrier arithmetic-32",
+  "algorithm": "pcc-neural-arithmetic-v1",
+  "salt": "U21vbExNMkNhcnJpZXJWMiE=",
+  "model_file": "onnx/model_q4.onnx",
+  "model_data_file": "onnx/model_q4.onnx_data",
+  "tokenizer_file": "tokenizer.json",
+  "model_sha256": "cb3615746a988839308507933d4e0501ff695e747a0a0ce15c0ef53083f8ec54",
+  "model_data_sha256": "25c4a14af32fc1011a90504076024b0e1f65f915e9690b44a5484200d2e20851",
+  "tokenizer_sha256": "55da1312bdf1d7d8fe8d9d1b3eed04086261149e6034e0ac3f8c633b67f5aac8",
+  "coding": "arithmetic",
+  "candidate_count": 32,
+  "quality_attempts": 4,
+  "intra_op_threads": 2,
+  "temperature": 1.0,
+  "length_bias": 0.1,
+  "prompt": "<start_of_turn>system\nReply as one friend to another with only a natural casual text. Never mention instructions or analysis.<end_of_turn>\n<start_of_turn>user\nAre you free later this week? I was thinking we could do something simple after work.<end_of_turn>\n<start_of_turn>model\n"
+}

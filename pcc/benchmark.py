@@ -33,7 +33,7 @@ def compare(
     model: HuffmanMarkovModel | TopicMarkovModel,
     passphrase: str | bytes,
     *,
-    interleave: bool = False,
+    interleave: bool = True,
 ) -> dict[str, Any]:
     rows: list[dict[str, Any]] = []
     for carrier_name, carrier in (("pack", pack), ("model", model)):

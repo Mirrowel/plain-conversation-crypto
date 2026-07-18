@@ -20,5 +20,16 @@ dependencies = [
 [project.scripts]
 pcc = "pcc.cli:main"
 
+[project.optional-dependencies]
+gpu-windows = ["onnxruntime-directml>=1.20"]
+gpu-cuda12 = [
+  "onnxruntime-gpu==1.22.0",
+  "nvidia-cuda-runtime-cu12==12.8.90",
+  "nvidia-cuda-nvrtc-cu12==12.8.93",
+  "nvidia-cublas-cu12==12.8.4.1",
+  "nvidia-cudnn-cu12==9.8.0.87",
+  "nvidia-cufft-cu12==11.3.3.83",
+]
+
 [tool.setuptools.packages.find]
 include = ["pcc*"]

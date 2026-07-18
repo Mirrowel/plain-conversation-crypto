@@ -14,7 +14,7 @@ from .compression import compression_name, compress_message, decompress_message
 from .crypto import DerivedKeys, derive_keys, stream_crypt, v2_context
 from .errors import AuthenticationError, CapacityExceeded, FrameError, InvalidArgument, PackMismatch, PCCError, TruncatedTranscript
 from .framing import MAX_FRAME_BODY, encode_length, frame_target_from_bits
-from .limits import MAX_CARRIER_TEXT_BYTES, MAX_TRANSCRIPT_MESSAGES
+from .limits import MAX_CARRIER_TEXT_BYTES, MAX_TRANSCRIPT_BYTES, MAX_TRANSCRIPT_MESSAGES
 from .model import HuffmanMarkovModel, TopicMarkovModel
 from .neural import OnnxLanguageCarrier
 from .pack import DialoguePack
@@ -168,6 +168,13 @@ def _pack_decode(pack: DialoguePack, keys: DerivedKeys, sequence: int, messages:
             raise PackMismatch("V2 carrier role does not match the dialogue pack")
         label = pack.decode_label(keys, arc_index, turn_index, text)
         bits.extend((label >> bit) & 1 for bit in range(turn.bits - 1, -1, -1))
+        frame_target = frame_target_from_bits(bits)
+        if frame_target is not None and len(bits) >= frame_target[1]:
+            if any(bits[frame_target[1] :]):
+                raise FrameError("V2 pack carrier has non-zero trailing bits")
+            if position != len(messages) - 1:
+                raise PackMismatch("V2 pack carrier has trailing messages after the frame")
+            return bits
     return bits
 
 
@@ -185,13 +192,13 @@ def encode_v2(
     plaintext: bytes,
     *,
     profile: str = "secure",
-    sequence: int = 0,
-    interleave: bool = False,
+    sequence: int | None = None,
+    interleave: bool = True,
 ) -> dict[str, Any]:
     if profile not in PROFILES:
         raise InvalidArgument("unknown V2 profile")
-    if not isinstance(sequence, int) or isinstance(sequence, bool) or not 0 <= sequence < 2**64:
-        raise InvalidArgument("sequence must be an unsigned 64-bit integer")
+    if sequence is None or not isinstance(sequence, int) or isinstance(sequence, bool) or not 0 <= sequence < 2**64:
+        raise InvalidArgument("sequence is mandatory and must be an unsigned 64-bit integer")
     kind, carrier_id, salt = _carrier_identity(carrier)
     keys = derive_keys(passphrase, salt)
     compressed = compress_message(plaintext)
@@ -217,7 +224,7 @@ def encode_v2(
                 except PCCError as exc:
                     last_error = exc
                     continue
-                if carrier.accepts_cover(" ".join(candidate)) or candidate_attempt == attempts - 1:
+                if carrier.accepts_cover(" ".join(candidate)):
                     attempt = candidate_attempt
                     texts = candidate
                     break
@@ -267,6 +274,19 @@ def decode_v2(
         raise TruncatedTranscript("V2 transcript contains no cover messages")
     if len(messages) > MAX_TRANSCRIPT_MESSAGES:
         raise FrameError("V2 transcript contains too many cover messages")
+    transcript_bytes = 0
+    for message in messages:
+        if not isinstance(message, dict) or not isinstance(message.get("text"), str):
+            raise FrameError("V2 carrier message is malformed")
+        try:
+            message_bytes = len(message["text"].encode("utf-8", "strict"))
+        except UnicodeError as exc:
+            raise FrameError("V2 carrier message contains invalid Unicode") from exc
+        if message_bytes > MAX_CARRIER_TEXT_BYTES:
+            raise FrameError("V2 carrier message is too large")
+        transcript_bytes += message_bytes
+        if transcript_bytes > MAX_TRANSCRIPT_BYTES:
+            raise FrameError("V2 transcript text is too large")
     keys = derive_keys(passphrase, salt)
     if isinstance(carrier, DialoguePack):
         bits = _pack_decode(carrier, keys, sequence, messages)
@@ -274,8 +294,6 @@ def decode_v2(
     else:
         texts = []
         for message in messages:
-            if not isinstance(message, dict) or not isinstance(message.get("text"), str):
-                raise FrameError("V2 statistical carrier message is malformed")
             texts.append(message["text"])
         declared_attempt = transcript.get("attempt", 0)
         if isinstance(carrier, OnnxLanguageCarrier) and declared_attempt is None:
