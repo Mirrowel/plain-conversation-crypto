@@ -2,6 +2,19 @@
 
 Date: 2026-07-18
 
+## Status And Inspiration
+
+This project is a research thought experiment and exploratory prototype, not a
+production messaging application or a claim of undetectable communication. Its
+concept was inspired by the encrypted chat app depicted in season 2 of the TV
+series *The Agency*. The implementation research was also informed by the
+linked [`nethical6/conversation-steganography`](https://github.com/nethical6/conversation-steganography)
+reference repository.
+
+All results in this report should be read as prototype measurements. They are
+not a security audit, a human-indistinguishability result, or evidence that the
+generated carriers are safe for operational use.
+
 ## Executive Summary
 
 V2 is more modular and gives explicit security/density choices, but the

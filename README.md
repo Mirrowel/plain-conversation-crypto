@@ -1,8 +1,19 @@
 # Plain Conversation Crypto
 
-Standalone prototype for carrying one encrypted logical message inside
-ordinary-looking conversational text. This project is separate from the
-[original `conversation-steganography` repository](https://github.com/nethical6/conversation-steganography).
+> [!IMPORTANT]
+> This is a research thought experiment and an exploratory prototype at best.
+> It is a nice idea to investigate, not a production messenger, a reviewed
+> security product, or proof that generated carriers are undetectable. Do not
+> rely on it for personal safety, operational security, or high-risk secrets.
+
+Plain Conversation Crypto explores carrying one encrypted logical message
+inside ordinary-looking conversational text. It was inspired by the encrypted
+chat app depicted in season 2 of the TV series *The Agency*.
+
+The implementation was also informed by, and is compared directly with,
+[`nethical6/conversation-steganography`](https://github.com/nethical6/conversation-steganography).
+Plain Conversation Crypto is an independent prototype rather than a fork or
+production replacement for that project.
 
 The receiver pastes the visible cover bubbles belonging to one logical message
 and gets one plaintext message back. A logical message may require multiple
@@ -248,6 +259,11 @@ The prototype does not claim resistance to an adversary trained specifically
 to detect its generated distribution. It also does not hide timing, participant
 identity, message count, or social-graph metadata. Exact visible text matters;
 normalization, rewriting, smart punctuation, or editing can break decoding.
+
+Even when a generated message looks natural, that does not establish
+indistinguishability from human writing. The repository should be treated as a
+platform for experiments, measurements, and discussion rather than a finished
+secure-communications application.
 
 ## Tests
 

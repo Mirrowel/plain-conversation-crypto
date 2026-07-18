@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "plain-conversation-crypto"
 version = "0.2.0"
-description = "Encrypted messages carried by deterministic or compact statistical language models"
+description = "Research prototype for carrying encrypted messages in conversational text"
 requires-python = ">=3.10"
 dependencies = [
   "cryptography>=42",
