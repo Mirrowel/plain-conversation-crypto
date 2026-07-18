@@ -2,7 +2,7 @@
 
 Standalone prototype for carrying one encrypted logical message inside
 ordinary-looking conversational text. This project is separate from the
-original cloned repository.
+[original `conversation-steganography` repository](https://github.com/nethical6/conversation-steganography).
 
 The receiver pastes the visible cover bubbles belonging to one logical message
 and gets one plaintext message back. A logical message may require multiple
@@ -42,7 +42,7 @@ carriers use local ONNX files. Download one separately:
 python tools/download_models.py smollm360
 ```
 
-See `models/README.md` for model sizes, hashes, licenses, and the tested model
+See the [model documentation](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/models/README.md) for model sizes, hashes, licenses, and the tested model
 comparison.
 
 ## V2 CLI
@@ -129,31 +129,31 @@ without adding visible data. Both sides can explicitly opt out with
 
 ### Deterministic dialogue pack
 
-`packs/semantic_demo.json` is the no-LLM baseline. It contains typed,
+[`packs/semantic_demo.json`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/packs/semantic_demo.json) is the no-LLM baseline. It contains typed,
 human-authored conversation arcs, alternating speakers, and four independent
 8-choice clause groups per turn. It carries 12 bits per coherent turn and is
 the most predictable quality baseline.
 
-`packs/dense_semantic_pack.json` is an experimental 21-bit-per-turn pack. Its
+[`packs/dense_semantic_pack.json`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/packs/dense_semantic_pack.json) is an experimental 21-bit-per-turn pack. Its
 larger branching factor improves density, but every generated combination must
 still receive human review. It is not selected as the default until that
 quality gate passes.
 
 ### Compact statistical model
 
-`packs/chat_dense_model.json` is a small order-4 word model trained from
-`packs/model_corpus.txt`. It is lightweight and fast, and remains available as
+[`packs/chat_dense_model.json`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/packs/chat_dense_model.json) is a small order-4 word model trained from the
+[`model_corpus.txt`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/packs/model_corpus.txt) corpus. It is lightweight and fast, and remains available as
 an option. Its output is denser than the dialogue pack but does not guarantee
 conversation-level coherence.
 
-`packs/chat_topic_model.json` bundles topic-specific statistical models. It
+[`packs/chat_topic_model.json`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/packs/chat_topic_model.json) bundles topic-specific statistical models. It
 reduces unrelated topic jumps at the cost of density.
 
 ### Local neural model
 
 The best tested quality/density compromise is the local
 `SmolLM2-360M-Instruct` INT8 ONNX model with
-`models/smollm2-360m-int8/carrier-huffman16.json`. It uses model probabilities
+[`carrier-huffman16.json`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/models/smollm2-360m-int8/carrier-huffman16.json). It uses model probabilities
 to build keyed Huffman choices, rather than forcing all top-k tokens to appear
 equally often.
 
@@ -228,7 +228,8 @@ The current engineering conclusion is:
   text requirement.
 
 The full source-based reference comparison, model sweep, arithmetic-coding
-experiment, and GPU timing study are in `docs/optimization_report.md`.
+experiment, and GPU timing study are in the
+[optimization report](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/docs/optimization_report.md).
 
 ## Security Boundary
 

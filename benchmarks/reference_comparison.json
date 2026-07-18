@@ -1,5 +1,6 @@
 {
-  "reference_repository": "C:/Projects/conversation-steganography",
+  "reference_repository": "https://github.com/nethical6/conversation-steganography",
+  "reference_commit": "b80b874aed7421df1f43e0435e39e0918ec7f4c8",
   "reference_runtime_executed": false,
   "reference_runtime_blocker": "Go toolchain and exact local model runtime were unavailable",
   "reference_source_facts": {
@@ -23,7 +24,7 @@
     "semantic_pack_compact_hello": {"bubbles": 7, "visible_chars": 833},
     "semantic_pack_dense_hello": {"bubbles": 2, "visible_chars": 223},
     "smollm360_arithmetic32_dense_hello": {"bubbles": 1, "visible_chars": 133},
-    "gemma3_arithmetic32_dense_hello": {"bubbles": 1, "visible_chars": 93, "source": "model_spot_checks.json"}
+    "gemma3_arithmetic32_dense_hello": {"bubbles": 1, "visible_chars": 93, "source": "https://github.com/Mirrowel/plain-conversation-crypto/blob/main/benchmarks/model_spot_checks.json"}
   },
   "interpretation": "The reference and neural V2 carriers have comparable short-message hidden budgets; the reference has stronger rolling conversation coherence, while V2 has explicit no-auth density and no-model options."
 }

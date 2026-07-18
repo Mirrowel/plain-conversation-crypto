@@ -5,7 +5,7 @@ Date: 2026-07-18
 ## Executive Summary
 
 V2 is more modular and gives explicit security/density choices, but the
-original `conversation-steganography` repository has two carrier improvements
+original [`conversation-steganography` repository](https://github.com/nethical6/conversation-steganography) has two carrier improvements
 that V2 initially lacked: probability-weighted arithmetic coding and a rolling
 conversation prompt. Those ideas are now represented in V2's experimental
 neural arithmetic carrier and in this report.
@@ -31,43 +31,45 @@ The practical result is not that one implementation universally wins:
 
 ## Reference Implementation
 
-The comparison target is `C:\Projects\conversation-steganography`. The source
-was inspected directly. A native run was not performed because the workspace
+The comparison target is
+[`nethical6/conversation-steganography` at commit `b80b874`](https://github.com/nethical6/conversation-steganography/tree/b80b874aed7421df1f43e0435e39e0918ec7f4c8).
+The source was inspected directly. A native run was not performed because the benchmark environment
 does not have the Go toolchain installed and the reference also requires a
 matching local model/runtime. The reference numbers below are therefore
 source-derived budgets, not fabricated runtime measurements.
 
 Important source facts:
 
-- `cmd/conversation-stenography/setup.go:267-290` defaults to arithmetic
+- [`setup.go:267-290`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/cmd/conversation-stenography/setup.go#L267-L290) defaults to arithmetic
   coding, `CandidatePool=8`, `CarrierTrials=2`, strict style, temperature
   `1.0`, length bias `0.1`, and 32 finishing tokens. `TopN=8` is selected for
   the Transformers runtime; the other setup path uses `TopN=256`.
-- `generative.go:202-260` uses a binary arithmetic decoder and encoder in
+- [`generative.go:202-260`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/generative.go#L202-L260) uses a binary arithmetic decoder and encoder in
   parallel. It stops when the generated symbols have confirmed the complete
   framed payload.
-- `arithmetic.go:17-66` converts model scores into a 32768-unit frequency
+- [`arithmetic.go:17-66`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/arithmetic.go#L17-L66) converts model scores into a 32768-unit frequency
   table, guaranteeing every candidate a nonzero interval.
-- `generative.go:698-741` requests a larger candidate pool, filters unsafe
+- [`generative.go:698-741`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/generative.go#L698-L741) requests a larger candidate pool, filters unsafe
   visible tokens, and keeps the top configured candidates.
-- `generative.go:744-779` rejects labels, metadata words, controls, digits, and
+- [`generative.go:744-779`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/generative.go#L744-L779) rejects labels, metadata words, controls, digits, and
   other visibly non-chat tokens.
-- `conversation_chain.go:313-341` puts the previous visible conversation into
+- [`conversation_chain.go:313-341`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L313-L341) puts the previous visible conversation into
   the next model prompt. This is a major coherence advantage over a static
   prompt.
-- `conversation_chain.go:150-213` generates multiple carrier trials and picks
+- [`conversation_chain.go:150-213`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L150-L213) generates multiple carrier trials and picks
   the shortest one within the naturalness slack.
-- `message_compression.go:126-175` tries common phrases, static dictionary
+- [`message_compression.go:126-175`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/message_compression.go#L126-L175) tries common phrases, static dictionary
   DEFLATE, a dynamic dictionary, fragment coding, compact fragments, and dense
   fragments, selecting the shortest packed result.
-- `conversation_chain.go:418-437` builds a rolling compression dictionary from
+- [`conversation_chain.go:418-437`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L418-L437) builds a rolling compression dictionary from
   the static chat dictionary plus recent visible carrier text.
-- `conversation_chain.go:363-369` seals the packed bytes with AES-SIV.
-- `conversation_chain.go:88-95` accounts for a variable-length frame; the
-  16-byte tag is assigned at `conversation_chain.go:76` and defined by
-  `siv.go:12`.
-- `conversation_chain.go:130-148` requires exact message ordering and sender
-  state, while `conversation_chain.go:347-354` and `440-450` bind the rolling
+- [`conversation_chain.go:363-369`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L363-L369) seals the packed bytes with AES-SIV.
+- [`conversation_chain.go:88-95`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L88-L95) accounts for a variable-length frame; the
+  16-byte tag is assigned at [`conversation_chain.go:76`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L76) and defined by
+  [`siv.go:12`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/siv.go#L12).
+- [`conversation_chain.go:130-148`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L130-L148) requires exact message ordering and sender
+  state, while [`conversation_chain.go:347-354`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L347-L354) and
+  [`conversation_chain.go:440-450`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L440-L450) bind the rolling
   chain into authenticated data. Reordering is intentionally rejected.
 
 ### Reference `hello` Budget
@@ -75,7 +77,7 @@ Important source facts:
 The reference's `commonMessages` table does not contain exactly `hello`, but
 its fragment protocol does. The shortest `hello` packing path is exactly 2
 bytes: one mode byte and one fragment index byte. The default arithmetic chain
-is explicitly unframed (`conversation_chain.go:309-311`), so AES-SIV adds 16
+is explicitly unframed ([`conversation_chain.go:309-311`](https://github.com/nethical6/conversation-steganography/blob/b80b874aed7421df1f43e0435e39e0918ec7f4c8/conversation_chain.go#L309-L311)), so AES-SIV adds 16
 bytes and no extra frame byte.
 
 ```text
@@ -95,7 +97,8 @@ the same model and tokenizer.
 
 ## V2 Results
 
-The measurements are stored under `benchmarks/` and use one logical hidden
+The measurements are stored in the repository's
+[`benchmarks/`](https://github.com/Mirrowel/plain-conversation-crypto/tree/main/benchmarks) directory and use one logical hidden
 message per encode operation.
 
 ### Authored Semantic Pack
@@ -142,7 +145,7 @@ sequential.
 
 The exact SmolLM2 samples and timings are kept in the neural benchmark JSON
 files. The Gemma/Qwen/LFM values are explicitly single-message exploratory
-spot checks in `benchmarks/model_spot_checks.json`, not quality benchmarks.
+spot checks in [`model_spot_checks.json`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/benchmarks/model_spot_checks.json), not quality benchmarks.
 Arithmetic-8 was more conservative but substantially longer. Huffman-32 was
 denser in some cases but forced less probable words and was less natural.
 
@@ -193,7 +196,7 @@ than CPU for one-token sequential inference. CUDA was made to load with CUDA
 The CUDA graph inserted many memory-copy operations. Provider-level numerical
 differences also changed token choices, proving that provider selection must be
 part of the carrier identity. The raw study is committed as
-`benchmarks/gpu_provider_study.json`. CPU is therefore the protocol default;
+[`gpu_provider_study.json`](https://github.com/Mirrowel/plain-conversation-crypto/blob/main/benchmarks/gpu_provider_study.json). CPU is therefore the protocol default;
 CUDA and DirectML are explicit experiments only.
 
 ## Recommended Direction
